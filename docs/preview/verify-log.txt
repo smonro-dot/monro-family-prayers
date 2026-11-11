@@ -1,0 +1,137 @@
+server http://127.0.0.1:42881/monro-family-prayers/
+ok   site is not mounted at the domain root
+ok   manifest link is under the subpath
+ok   manifest id
+ok   manifest start_url
+ok   manifest scope
+ok   manifest display standalone
+ok   service worker scope http://127.0.0.1:42881/monro-family-prayers/
+ok   service worker script http://127.0.0.1:42881/monro-family-prayers/sw.js
+ok   service worker activated
+ok   icon /monro-family-prayers/icons/icon-192.png
+ok   /monro-family-prayers/icons/icon-192.png is 192x192
+ok   icon /monro-family-prayers/icons/icon-512.png
+ok   /monro-family-prayers/icons/icon-512.png is 512x512
+ok   icon /monro-family-prayers/icons/icon-maskable-512.png
+ok   /monro-family-prayers/icons/icon-maskable-512.png is 512x512
+ok   01-home.png is 390x844
+ok   night-screen.png is 390x844
+ok   night title
+ok   dedication
+ok   timer link
+ok   beginning section
+ok   simeon section
+ok   sunday hides the player when the file is missing
+ok   sunday has no audio src
+ok   02-compline-sunday.png is 390x844
+ok   monday hides the player when the file is missing
+ok   monday has no audio src
+ok   03-compline-monday.png is 390x844
+ok   tuesday hides the player when the file is missing
+ok   tuesday has no audio src
+ok   04-compline-tuesday.png is 390x844
+ok   wednesday hides the player when the file is missing
+ok   wednesday has no audio src
+ok   05-compline-wednesday.png is 390x844
+ok   thursday hides the player when the file is missing
+ok   thursday has no audio src
+ok   06-compline-thursday.png is 390x844
+ok   friday hides the player when the file is missing
+ok   friday has no audio src
+ok   07-compline-friday.png is 390x844
+ok   saturday hides the player when the file is missing
+ok   saturday has no audio src
+ok   08-compline-saturday.png is 390x844
+ok   Saturday includes Psalm 4
+ok   09-morning-offering.png is 390x844
+ok   rosary has Joyful Mysteries
+ok   rosary has Sorrowful Mysteries
+ok   rosary has Glorious Mysteries
+ok   rosary has Luminous Mysteries
+ok   rosary has Hail, holy Queen
+ok   10-rosary.png is 390x844
+ok   common prayers include I believe in God
+ok   common prayers include heartily sorry
+ok   common prayers include Angel of God
+ok   common prayers include Saint Michael the Archangel
+ok   common prayers include The Angel of the Lord declared unto Mary
+ok   11-common-prayers.png is 390x844
+ok   timer-screen.png is 390x844
+ok   face-to-face timer advances
+ok   screen exposes compline-sunday
+ok   README contract lists compline-sunday.mp3
+ok   compline-sunday.mp3 is a basename mp3
+ok   screen exposes compline-monday
+ok   README contract lists compline-monday.mp3
+ok   compline-monday.mp3 is a basename mp3
+ok   screen exposes compline-tuesday
+ok   README contract lists compline-tuesday.mp3
+ok   compline-tuesday.mp3 is a basename mp3
+ok   screen exposes compline-wednesday
+ok   README contract lists compline-wednesday.mp3
+ok   compline-wednesday.mp3 is a basename mp3
+ok   screen exposes compline-thursday
+ok   README contract lists compline-thursday.mp3
+ok   compline-thursday.mp3 is a basename mp3
+ok   screen exposes compline-friday
+ok   README contract lists compline-friday.mp3
+ok   compline-friday.mp3 is a basename mp3
+ok   screen exposes compline-saturday
+ok   README contract lists compline-saturday.mp3
+ok   compline-saturday.mp3 is a basename mp3
+ok   screen exposes morning-offering
+ok   README contract lists morning-offering.mp3
+ok   morning-offering.mp3 is a basename mp3
+ok   screen exposes rosary
+ok   README contract lists rosary.mp3
+ok   rosary.mp3 is a basename mp3
+ok   screen exposes apostles-creed
+ok   README contract lists apostles-creed.mp3
+ok   apostles-creed.mp3 is a basename mp3
+ok   screen exposes our-father
+ok   README contract lists our-father.mp3
+ok   our-father.mp3 is a basename mp3
+ok   screen exposes hail-mary
+ok   README contract lists hail-mary.mp3
+ok   hail-mary.mp3 is a basename mp3
+ok   screen exposes glory-be
+ok   README contract lists glory-be.mp3
+ok   glory-be.mp3 is a basename mp3
+ok   screen exposes hail-holy-queen
+ok   README contract lists hail-holy-queen.mp3
+ok   hail-holy-queen.mp3 is a basename mp3
+ok   screen exposes act-of-contrition
+ok   README contract lists act-of-contrition.mp3
+ok   act-of-contrition.mp3 is a basename mp3
+ok   screen exposes guardian-angel
+ok   README contract lists guardian-angel.mp3
+ok   guardian-angel.mp3 is a basename mp3
+ok   screen exposes saint-michael
+ok   README contract lists saint-michael.mp3
+ok   saint-michael.mp3 is a basename mp3
+ok   screen exposes angelus
+ok   README contract lists angelus.mp3
+ok   angelus.mp3 is a basename mp3
+ok   filenames are unique
+ok   sources page
+ok   offline reload of the app shell
+ok   offline text for home, Friday Compline, and Morning Offering
+temporary tone 32853 bytes (not committed)
+ok   media title set
+ok   Media Session metadata title
+ok   Media Session artist
+ok   Media Session playback state
+audioSession unsupported
+ok   hiding the page does not pause playback
+ok   12-audio-playing.png is 390x844
+ok   online range is 206 ({"status":206,"range":"bytes 0-1/32853","length":2})
+ok   offline range is 206 ({"status":206,"range":"bytes 0-1/32853","length":2,"type":"audio/mpeg"})
+ok   offline playback advanced currentTime
+beforeinstallprompt fired: false
+ok   footer dedication is present
+ok   no other given names were added
+ok   working tree app files do not contain Owen
+ok   working tree app files do not contain Phoebe
+ok   working tree app files do not contain roofmaxx
+ok   no page errors ()
+ALL CHECKS PASSED

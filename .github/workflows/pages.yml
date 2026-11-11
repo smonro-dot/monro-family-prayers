@@ -1,4 +1,9 @@
-name: Deploy to Pages
+# Publishes the static app to GitHub Pages after the owner turns Pages on.
+# This file does not enable Pages. configure-pages enablement is false on purpose.
+# Required one-time setting, done by the owner after merge approval:
+#   Settings → Pages → Build and deployment → Source: GitHub Actions
+# No secrets. The workflow uses the built-in GITHUB_TOKEN only.
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -21,10 +26,25 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assemble static site
+        run: |
+          mkdir -p _site
+          cp index.html sources.html manifest.json sw.js .nojekyll _site/
+          cp -a css js icons audio _site/
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
         with:
-          path: .
-      - id: deployment
+          enablement: false
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

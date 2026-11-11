@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "artist": "Monro Family Prayers",
+  "directory": "audio",
+  "format": "mp3",
+  "replace": "Overwrite the file. Keep the id and the filename. Do not edit JavaScript.",
+  "prayers": [
+    {
+      "id": "compline-sunday",
+      "title": "Sunday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-sunday.mp3"
+    },
+    {
+      "id": "compline-monday",
+      "title": "Monday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-monday.mp3"
+    },
+    {
+      "id": "compline-tuesday",
+      "title": "Tuesday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-tuesday.mp3"
+    },
+    {
+      "id": "compline-wednesday",
+      "title": "Wednesday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-wednesday.mp3"
+    },
+    {
+      "id": "compline-thursday",
+      "title": "Thursday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-thursday.mp3"
+    },
+    {
+      "id": "compline-friday",
+      "title": "Friday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-friday.mp3"
+    },
+    {
+      "id": "compline-saturday",
+      "title": "Saturday Night Prayer",
+      "album": "Night Prayer",
+      "file": "compline-saturday.mp3"
+    },
+    {
+      "id": "morning-offering",
+      "title": "Morning Offering",
+      "album": "Morning",
+      "file": "morning-offering.mp3"
+    },
+    {
+      "id": "rosary",
+      "title": "The Rosary",
+      "album": "Rosary",
+      "file": "rosary.mp3"
+    },
+    {
+      "id": "apostles-creed",
+      "title": "Apostles' Creed",
+      "album": "Common Prayers",
+      "file": "apostles-creed.mp3"
+    },
+    {
+      "id": "our-father",
+      "title": "Our Father",
+      "album": "Common Prayers",
+      "file": "our-father.mp3"
+    },
+    {
+      "id": "hail-mary",
+      "title": "Hail Mary",
+      "album": "Common Prayers",
+      "file": "hail-mary.mp3"
+    },
+    {
+      "id": "glory-be",
+      "title": "Glory Be",
+      "album": "Common Prayers",
+      "file": "glory-be.mp3"
+    },
+    {
+      "id": "hail-holy-queen",
+      "title": "Hail Holy Queen",
+      "album": "Common Prayers",
+      "file": "hail-holy-queen.mp3"
+    },
+    {
+      "id": "act-of-contrition",
+      "title": "Act of Contrition",
+      "album": "Common Prayers",
+      "file": "act-of-contrition.mp3"
+    },
+    {
+      "id": "guardian-angel",
+      "title": "Guardian Angel",
+      "album": "Common Prayers",
+      "file": "guardian-angel.mp3"
+    },
+    {
+      "id": "saint-michael",
+      "title": "Saint Michael",
+      "album": "Common Prayers",
+      "file": "saint-michael.mp3"
+    },
+    {
+      "id": "angelus",
+      "title": "The Angelus",
+      "album": "Common Prayers",
+      "file": "angelus.mp3"
+    }
+  ]
+}
