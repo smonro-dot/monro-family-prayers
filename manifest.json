@@ -8,8 +8,8 @@
   "scope": "/monro-family-prayers/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f0e0c",
-  "theme_color": "#0f0e0c",
+  "background_color": "#0b1224",
+  "theme_color": "#0b1224",
   "icons": [
     {
       "src": "/monro-family-prayers/icons/icon-192.png",

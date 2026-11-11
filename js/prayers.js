@@ -19,6 +19,8 @@
       id: "sunday",
       name: "Sunday",
       audioId: "compline-sunday",
+      picker: "91",
+      cardPsalm: "Psalm 91",
       psalms: [
         psalm("Psalm 90 (Hebrew 91)", "He that dwelleth in the aid of the most High, shall abide under the protection of the God of Jacob.", [
           [1, "He that dwelleth in the aid of the most High, shall abide under the protection of the God of Jacob."],
@@ -44,6 +46,8 @@
       id: "monday",
       name: "Monday",
       audioId: "compline-monday",
+      picker: "86",
+      cardPsalm: "Psalm 86",
       psalms: [
         psalm("Psalm 85 (Hebrew 86)", "Incline thy ear, O Lord, and hear me: for I am needy and poor.", [
           [1, "Incline thy ear, O Lord, and hear me: for I am needy and poor."],
@@ -70,6 +74,8 @@
       id: "tuesday",
       name: "Tuesday",
       audioId: "compline-tuesday",
+      picker: "143",
+      cardPsalm: "Psalm 143",
       psalms: [
         psalm("Psalm 142 (Hebrew 143)", "Hear, O Lord, my prayer: give ear to my supplication in thy truth.", [
           [1, "Hear, O Lord, my prayer: give ear to my supplication in thy truth: hear me in thy justice."],
@@ -91,6 +97,8 @@
       id: "wednesday",
       name: "Wednesday",
       audioId: "compline-wednesday",
+      picker: "31·130",
+      cardPsalm: "Psalms 31 and 130",
       psalms: [
         psalm("Psalm 30 (Hebrew 31)", "In thee, O Lord, have I hoped, let me never be confounded.", [
           [2, "In thee, O Lord, have I hoped, let me never be confounded: deliver me in thy justice."],
@@ -134,6 +142,8 @@
       id: "thursday",
       name: "Thursday",
       audioId: "compline-thursday",
+      picker: "16",
+      cardPsalm: "Psalm 16",
       psalms: [
         psalm("Psalm 15 (Hebrew 16)", "Preserve me, O Lord, for I have put my trust in thee.", [
           [1, "Preserve me, O Lord, for I have put my trust in thee."],
@@ -154,6 +164,8 @@
       id: "friday",
       name: "Friday",
       audioId: "compline-friday",
+      picker: "88",
+      cardPsalm: "Psalm 88",
       psalms: [
         psalm("Psalm 87 (Hebrew 88)", "O Lord, the God of my salvation: I have cried in the day, and in the night before thee.", [
           [2, "O Lord, the God of my salvation: I have cried in the day, and in the night before thee."],
@@ -181,6 +193,8 @@
       id: "saturday",
       name: "Saturday",
       audioId: "compline-saturday",
+      picker: "4·134",
+      cardPsalm: "Psalms 4 and 134",
       psalms: [
         psalm("Psalm 4", "Have mercy on me: and hear my prayer.", [
           [2, "When I called upon him, the God of my justice heard me: when I was in distress, thou hast enlarged me. Have mercy on me: and hear my prayer."],

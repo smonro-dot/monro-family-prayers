@@ -1,5 +1,5 @@
 (function () {
-  const CACHE_NAME = "monro-prayers-v1";
+  const CACHE_NAME = "monro-prayers-v3";
   const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
   const NAV = [
     ["home", "Home", "#/home"],
@@ -69,15 +69,16 @@
   function route() {
     const parts = (location.hash || "#/home").replace(/^#\/?/, "").split("/").filter(Boolean);
     const name = parts[0] || "home";
-    if (name === "night") {
-      const requested = parts[1];
+    if (name === "timer") return { name: "timer" };
+    if (name === "home" || name === "night") {
+      const requested = name === "night" ? parts[1] : null;
       const day = nightById(requested) ? requested : todayId();
       return { name: "night", day: day };
     }
-    if (name === "morning" || name === "rosary" || name === "common" || name === "home") {
+    if (name === "morning" || name === "rosary" || name === "common") {
       return { name: name };
     }
-    return { name: "home" };
+    return { name: "night", day: todayId() };
   }
 
   function renderNav(current) {
@@ -190,8 +191,8 @@
 
   async function showDock(entry) {
     const url = audioFileUrl(entry);
-    dock.hidden = false;
-    document.body.classList.add("has-player");
+    dock.hidden = true;
+    document.body.classList.remove("has-player");
     dockTitle.textContent = entry.title;
     dock.dataset.state = "ready";
     dockState.textContent = "Loading recording…";
@@ -286,19 +287,54 @@
   }
 
   /* A locked or face-down phone hides the page. Do not pause here. */
+  function orbIcon(kind) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    if (kind === "pause") {
+      const a = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      a.setAttribute("x", "6"); a.setAttribute("y", "5"); a.setAttribute("width", "4"); a.setAttribute("height", "14");
+      const b = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      b.setAttribute("x", "14"); b.setAttribute("y", "5"); b.setAttribute("width", "4"); b.setAttribute("height", "14");
+      a.setAttribute("fill", "currentColor");
+      b.setAttribute("fill", "currentColor");
+      svg.append(a, b);
+    } else {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M8 5v14l11-7z");
+      path.setAttribute("fill", "currentColor");
+      svg.append(path);
+    }
+    return svg;
+  }
+
+  function syncOrb() {
+    const orb = document.getElementById("night-play");
+    const label = document.getElementById("play-state");
+    const playing = audio.src && !audio.paused && !audio.ended;
+    if (orb) {
+      orb.replaceChildren(orbIcon(playing ? "pause" : "play"));
+      orb.setAttribute("aria-label", playing ? "Pause" : "Play");
+    }
+    if (label) label.textContent = playing ? "Playing" : (audio.ended ? "Finished" : "Ready");
+    if (dockState) dockState.textContent = playing ? "Playing" : (audio.ended ? "Finished" : "Ready");
+    if (dock) dock.dataset.state = playing ? "playing" : (audio.ended ? "ended" : "paused");
+  }
+
   audio.addEventListener("play", function () {
     dock.dataset.state = "playing";
     dockState.textContent = "Playing";
     dockToggle.textContent = "Pause";
+    syncOrb();
     setMediaSession();
     updatePosition();
   });
 
   audio.addEventListener("pause", function () {
-    if (dock.hidden) return;
     dock.dataset.state = audio.ended ? "ended" : "paused";
     dockState.textContent = audio.ended ? "Finished" : "Paused";
     dockToggle.textContent = "Play";
+    syncOrb();
     if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "paused";
   });
 
@@ -330,46 +366,94 @@
     parent.append(para(item.antiphon, "antiphon"));
   }
 
+  function roleLine(role, text) {
+    const node = el("p", { class: "role-line" });
+    node.append(el("span", { class: "who" }, role), text);
+    return node;
+  }
+
+  let lastNightId = null;
+  let timerHandle = 0;
+  let timerEndsAt = 0;
+  let timerLeft = 5 * 60 * 1000;
+  let timerRunning = false;
+
+  function clearTimer() {
+    if (timerHandle) cancelAnimationFrame(timerHandle);
+    timerHandle = 0;
+  }
+
   async function renderNight(night, token) {
-    const view = el("article", { class: "prayer", "data-day": night.id });
+    lastNightId = night.id;
+    const view = el("article", { class: "prayer night-screen", "data-day": night.id });
+    view.append(el("div", { class: "cross", "aria-hidden": "true" }));
+    view.append(el("h1", {}, "Night Prayer"));
+    view.append(para("A bedtime prayer for two.", "tagline serif-italic"));
+    view.append(para("Compline, with the Douay-Rheims psalms.", "tagline"));
+
+    const card = el("section", { class: "tonight" });
+    const tonightName = night.id === todayId() ? "Tonight · " + night.name : night.name;
+    card.append(el("p", { class: "eyebrow" }, tonightName));
+    card.append(el("h2", {}, night.name + " Night"));
+    card.append(para(night.cardPsalm, "psalm-name"));
+    card.append(para(night.psalms[0].antiphon, "antiphon"));
+    const primary = await slot(entry(night.audioId), true);
+    if (token !== renderToken) return;
+    if (primary.dataset.audioState === "ready") {
+      const orb = el("button", { type: "button", class: "play-orb", id: "night-play", "aria-label": "Play" });
+      orb.append(orbIcon("play"));
+      orb.addEventListener("click", function () {
+        const item = entry(night.audioId);
+        if (audio.dataset.prayerId === item.id && !audio.paused) {
+          audio.pause();
+          return;
+        }
+        loadAndPlay(item);
+      });
+      card.append(orb);
+      card.append(el("p", { class: "play-hint", id: "play-state" }, "Ready"));
+      card.append(para("Press play, then set the phone down.", "play-hint"));
+      card.append(para("One recording for this night, about five minutes.", "play-hint quiet"));
+    } else {
+      card.append(primary);
+    }
+    const timerLink = el("a", { class: "timer-link", id: "face-timer", href: "#/timer" }, "Five minutes, face to face");
+    card.append(timerLink);
+    card.append(para("After the prayer. A quiet timer for the two of you. No screens.", "timer-note"));
+    view.append(card);
+
+    view.append(el("div", { class: "week-head" },
+      el("h3", {}, "The seven nights"),
+      el("p", {}, "One psalm cycle, all week.")
+    ));
     const days = el("div", { class: "days" });
     window.PRAYERS.nights.forEach(function (item) {
       const button = el("button", {
         type: "button",
         class: "day",
         "aria-pressed": item.id === night.id ? "true" : "false"
-      }, item.name.slice(0, 3));
+      });
+      button.append(el("span", { class: "day-name" }, item.name.slice(0, 3)));
+      button.append(el("span", { class: "day-ps" }, item.picker));
       button.addEventListener("click", function () {
         location.hash = "#/night/" + item.id;
       });
       days.append(button);
     });
     view.append(days);
-    view.append(el("h2", {}, "Night Prayer · " + night.name));
-    view.append(para("Traditional Roman Compline. The psalm is Douay-Rheims. This is not the copyrighted modern Liturgy of the Hours.", "lede"));
-    const primary = await slot(entry(night.audioId), true);
-    if (token !== renderToken) return;
-    view.append(primary);
 
-    view.append(el("h3", {}, "Opening"));
-    view.append(versicle("v", "Turn us, O God our saviour."));
-    view.append(versicle("r", "And turn away thine anger from us."));
-    view.append(versicle("v", "O God, come to my assistance."));
-    view.append(versicle("r", "O Lord, make haste to help me."));
+    view.append(el("h2", { class: "night-title" }, night.name + " Night"));
+    view.append(para(night.cardPsalm, "psalm-name"));
+
+    view.append(el("h3", {}, "Beginning"));
+    view.append(roleLine("One", "Turn us, O God our saviour."));
+    view.append(roleLine("Other", "And turn away thine anger from us."));
+    view.append(roleLine("One", "O God, come to my assistance."));
+    view.append(roleLine("Other", "O Lord, make haste to help me."));
     view.append(para(window.PRAYERS.glory));
-    view.append(para("Alleluia. Leave this out in Lent.", "rubric"));
+    view.append(para("Alleluia. Leave this out in Lent. Then a quiet moment: thank God for the good in this day, and ask pardon for what was against love.", "rubric"));
 
-    view.append(el("h3", {}, "Examination"));
-    view.append(para("A brief examination of conscience. Thank God for the good in this day, and ask pardon for what was against love.", "rubric"));
-
-    view.append(el("h3", {}, "I confess"));
-    view.append(para("I confess to almighty God, to blessed Mary ever Virgin, to blessed Michael the Archangel, to blessed John the Baptist, to the holy apostles Peter and Paul, to all the saints, and to you, brethren, that I have sinned exceedingly in thought, word, and deed, through my fault, through my fault, through my most grievous fault. Therefore I beseech blessed Mary ever Virgin, blessed Michael the Archangel, blessed John the Baptist, the holy apostles Peter and Paul, all the saints, and you, brethren, to pray for me to the Lord our God."));
-    view.append(para("May almighty God have mercy on us, forgive us our sins, and bring us to everlasting life. Amen."));
-
-    view.append(el("h3", {}, "Hymn"));
-    view.append(para("Te lucis ante terminum", "lede"));
-    view.append(para(window.PRAYERS.hymn.join("\n"), "hymn"));
-
+    view.append(el("h3", {}, "Psalm"));
     night.psalms.forEach(function (item) { appendPsalm(view, item); });
 
     view.append(el("h3", {}, "Reading"));
@@ -377,7 +461,7 @@
     view.append(para(window.PRAYERS.reading.text));
     view.append(versicle("r", "Thanks be to God."));
 
-    view.append(el("h3", {}, "Responsory"));
+    view.append(el("h3", {}, "Response"));
     view.append(versicle("v", "Into thy hands, O Lord, I commend my spirit."));
     view.append(versicle("r", "Into thy hands, O Lord, I commend my spirit."));
     view.append(versicle("v", "Thou hast redeemed us, O Lord, the God of truth."));
@@ -385,13 +469,13 @@
     view.append(versicle("v", "Glory be to the Father, and to the Son, and to the Holy Ghost."));
     view.append(versicle("r", "Into thy hands, O Lord, I commend my spirit."));
 
-    view.append(el("h3", {}, "Canticle of Simeon"));
+    view.append(el("h3", {}, "Simeon's Song"));
     view.append(para(window.PRAYERS.nuncAntiphon, "antiphon"));
     window.PRAYERS.nunc.forEach(function (row) { view.append(verse(row[0], row[1])); });
     view.append(para(window.PRAYERS.glory));
     view.append(para(window.PRAYERS.nuncAntiphon, "antiphon"));
 
-    view.append(el("h3", {}, "Prayer"));
+    view.append(el("h3", {}, "Closing Prayer"));
     view.append(para("Visit, we beseech thee, O Lord, this habitation, and drive far from it all snares of the enemy. Let thy holy angels dwell herein, to keep us in peace, and let thy blessing be always upon us. Through our Lord Jesus Christ, thy Son, who liveth and reigneth with thee in the unity of the Holy Ghost, God, world without end. Amen."));
 
     view.append(el("h3", {}, "Blessing"));
@@ -400,7 +484,9 @@
     view.append(versicle("v", "May the almighty and merciful Lord, the Father, the Son, and the Holy Ghost, bless us and keep us."));
     view.append(versicle("r", "Amen."));
 
-    view.append(el("h3", {}, "Hail, holy Queen"));
+    view.append(el("h3", {}, "Hail Mary"));
+    view.append(para(window.PRAYERS.hailMary));
+    view.append(el("h3", {}, "Hail Holy Queen"));
     view.append(para("Outside Eastertide.", "rubric"));
     view.append(para(window.PRAYERS.hailHolyQueen));
     view.append(versicle("v", "Pray for us, O holy Mother of God."));
@@ -495,12 +581,65 @@
 
   const P = function () { return window.PRAYERS; };
 
+  function renderTimer(token) {
+    clearTimer();
+    timerRunning = false;
+    timerLeft = 5 * 60 * 1000;
+    document.title = "Five minutes, face to face";
+    const view = el("section", { class: "timer-screen" });
+    view.append(el("p", { class: "eyebrow" }, "Five minutes"));
+    view.append(el("h1", {}, "Face to face"));
+    const clock = el("p", { class: "timer-clock", id: "timer-clock" }, "5:00");
+    const note = el("p", { class: "lede", id: "timer-note" }, "A quiet five minutes to talk. Set the phone down. No screens.");
+    const start = el("button", { type: "button", class: "timer-link", id: "timer-start" }, "Start");
+    view.append(clock, note, start);
+    view.append(el("a", { class: "back-link", href: "#/night/" + (lastNightId || todayId()) }, "Back to the prayer"));
+    content.replaceChildren(view);
+
+    function paint() {
+      if (token !== renderToken) return;
+      const left = timerRunning ? Math.max(0, timerEndsAt - Date.now()) : timerLeft;
+      const total = Math.ceil(left / 1000);
+      clock.textContent = Math.floor(total / 60) + ":" + String(total % 60).padStart(2, "0");
+      if (timerRunning && left <= 0) {
+        timerRunning = false;
+        timerLeft = 0;
+        note.textContent = "The five minutes are finished.";
+        start.textContent = "Start again";
+        return;
+      }
+      if (timerRunning) timerHandle = requestAnimationFrame(paint);
+    }
+    paint();
+    start.addEventListener("click", function () {
+      if (timerRunning) {
+        timerLeft = Math.max(0, timerEndsAt - Date.now());
+        timerRunning = false;
+        start.textContent = "Resume";
+        note.textContent = "Paused.";
+        return;
+      }
+      if (timerLeft <= 0) timerLeft = 5 * 60 * 1000;
+      audio.pause();
+      timerEndsAt = Date.now() + timerLeft;
+      timerRunning = true;
+      start.textContent = "Pause";
+      note.textContent = "Talk together. The screen can go dark.";
+      paint();
+    });
+  }
+
   async function render() {
     const token = ++renderToken;
     const current = route();
+    if (current.name !== "timer") clearTimer();
     renderNav(current.name === "night" ? "night" : current.name);
     if (!catalog) {
       content.replaceChildren(para("The prayer list is loading.", "lede"));
+      return;
+    }
+    if (current.name === "timer") {
+      renderTimer(token);
       return;
     }
     if (current.name === "home") {

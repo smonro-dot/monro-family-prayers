@@ -116,9 +116,14 @@ async function main() {
       assert(size.width === 390 && size.height === 844, name + " is 390x844");
     }
 
+    await page.waitForFunction(() => document.querySelector("h1") && document.body.textContent.includes("Night Prayer"));
     await shot("01-home.png");
-    assert(await page.locator("h1").innerText() === "Monro Family Prayers", "home title");
-    assert(await page.getByText("Morning Offering", { exact: true }).count() > 0, "home shows Morning Offering");
+    await shot("night-screen.png");
+    assert((await page.locator("h1").textContent()).includes("Night Prayer"), "night title");
+    assert((await page.locator("body").textContent()).includes("For Spencer & Rosie"), "dedication");
+    assert((await page.locator("body").textContent()).includes("Five minutes, face to face"), "timer link");
+    assert((await page.locator("body").textContent()).includes("Beginning"), "beginning section");
+    assert((await page.locator("body").textContent()).includes("Simeon's Song"), "simeon section");
 
     const seen = new Set();
     async function collectIds() {
@@ -169,6 +174,12 @@ async function main() {
     }
     await collectIds();
     await shot("11-common-prayers.png");
+    await page.goto(url + "#/timer", { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => document.querySelector("#timer-clock") && document.querySelector("#timer-clock").textContent === "5:00");
+    await shot("timer-screen.png");
+    await page.click("#timer-start");
+    await page.waitForFunction(() => document.querySelector("#timer-clock").textContent !== "5:00");
+    log("ok   face-to-face timer advances");
 
     const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, "audio", "catalog.json"), "utf8"));
     const readme = fs.readFileSync(path.join(ROOT, "README.md"), "utf8");
@@ -185,7 +196,7 @@ async function main() {
     await context.setOffline(true);
     const offlineResponse = await page.goto(url, { waitUntil: "domcontentloaded" });
     assert(offlineResponse && offlineResponse.ok(), "offline reload of the app shell");
-    await page.waitForFunction(() => document.querySelector("h1") && document.querySelector("h1").textContent.includes("Monro Family Prayers"));
+    await page.waitForFunction(() => document.querySelector("h1") && document.querySelector("h1").textContent.includes("Night Prayer"));
     await page.goto(url + "#/night/friday", { waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => document.body.innerText.includes("in the day, and in the night"));
     await page.goto(url + "#/morning", { waitUntil: "domcontentloaded" });
@@ -196,15 +207,15 @@ async function main() {
     makeTone();
     log("temporary tone " + fs.statSync(TONE).size + " bytes (not committed)");
     await page.goto(url + "#/night/sunday", { waitUntil: "networkidle" });
-    await page.waitForFunction(() => document.querySelector("#dock") && document.querySelector("#dock").hidden === false);
+    await page.waitForFunction(() => document.querySelector("#night-play"));
     await page.waitForFunction(() => {
       const audio = document.querySelector("#prayer-audio");
       return audio && audio.readyState >= 2;
     });
-    await page.click("#dock-toggle");
+    await page.click("#night-play");
     await page.waitForFunction(() => {
       const audio = document.querySelector("#prayer-audio");
-      return audio && !audio.paused && audio.currentTime > 0.2 && document.querySelector("#dock-state").textContent === "Playing";
+      return audio && !audio.paused && audio.currentTime > 0.2 && document.querySelector("#play-state").textContent === "Playing";
     });
     const session = await page.evaluate(() => ({
       title: document.body.dataset.mediaTitle,
@@ -229,7 +240,7 @@ async function main() {
 
     const audioUrl = new URL("audio/compline-sunday.mp3", url).href;
     await page.waitForFunction(async (src) => {
-      const cache = await caches.open("monro-prayers-v1");
+      const cache = await caches.open("monro-prayers-v3");
       const hit = await cache.match(src);
       return Boolean(hit && hit.status === 200);
     }, audioUrl);
@@ -250,9 +261,9 @@ async function main() {
     assert(offlineRange.status === 206 && offlineRange.length === 2, "offline range is 206 (" + JSON.stringify(offlineRange) + ")");
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => document.body.innerText.includes("terror of the night"));
-    await page.waitForFunction(() => document.querySelector("#dock") && document.querySelector("#dock").hidden === false);
+    await page.waitForFunction(() => document.querySelector("#night-play"));
     await page.waitForFunction(() => document.querySelector("#prayer-audio") && document.querySelector("#prayer-audio").readyState >= 2);
-    await page.click("#dock-toggle");
+    await page.click("#night-play");
     await page.waitForFunction(() => {
       const audio = document.querySelector("#prayer-audio");
       return audio && !audio.paused && audio.currentTime > 0.2;
@@ -263,7 +274,7 @@ async function main() {
     const prompt = await page.evaluate(() => window.__installPrompt);
     log("beforeinstallprompt fired: " + prompt);
 
-    const names = ["Spencer", "Rosie", "Owen", "Phoebe", "roofmaxx"];
+    const names = ["Owen", "Phoebe", "roofmaxx"];
     const tree = [];
     function walk(dir) {
       for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -275,6 +286,10 @@ async function main() {
     }
     walk(ROOT);
     const blob = tree.map((file) => fs.readFileSync(file, "utf8")).join("\n");
+    const dedication = "For Spencer &amp; Rosie";
+    assert(blob.includes(dedication), "footer dedication is present");
+    const stripped = blob.split(dedication).join("");
+    assert(!stripped.includes("Spencer") && !stripped.includes("Rosie"), "no other given names were added");
     for (const name of names) {
       assert(!blob.includes(name), "working tree app files do not contain " + name);
     }

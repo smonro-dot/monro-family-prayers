@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0f0e0c">
+  <meta name="theme-color" content="#0b1224">
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Night Prayer for each day, the Morning Offering, the Rosary, and common prayers. Offline on your phone.">
   <meta name="mobile-web-app-capable" content="yes">
@@ -18,26 +18,18 @@
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-  <header>
-    <div class="cross" aria-hidden="true"></div>
-    <h1>Monro Family Prayers</h1>
-    <p class="tagline">Night prayer, morning offering, rosary</p>
-  </header>
   <nav id="nav" class="nav" aria-label="Prayers"></nav>
   <main id="content"></main>
   <footer>
+    <p class="dedication">For Spencer &amp; Rosie</p>
     <p id="offline-status">Opening…</p>
-    <p><a href="sources.html">Text sources</a></p>
+    <p class="foot-links"><a href="sources.html">Text sources</a></p>
   </footer>
+  <audio id="prayer-audio" class="keep-audio" playsinline webkit-playsinline preload="auto"></audio>
   <div id="dock" class="dock" hidden data-state="idle">
-    <div class="dock-row">
-      <button type="button" id="dock-toggle">Play</button>
-      <div class="dock-copy">
-        <div id="dock-title"></div>
-        <div id="dock-state">Ready</div>
-      </div>
-    </div>
-    <audio id="prayer-audio" controls playsinline webkit-playsinline preload="auto"></audio>
+    <button type="button" id="dock-toggle">Play</button>
+    <div id="dock-title"></div>
+    <div id="dock-state">Ready</div>
   </div>
   <script src="js/prayers.js"></script>
   <script src="js/app.js"></script>

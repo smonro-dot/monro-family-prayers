@@ -1,12 +1,12 @@
-server http://127.0.0.1:41973/monro-family-prayers/
+server http://127.0.0.1:42881/monro-family-prayers/
 ok   site is not mounted at the domain root
 ok   manifest link is under the subpath
 ok   manifest id
 ok   manifest start_url
 ok   manifest scope
 ok   manifest display standalone
-ok   service worker scope http://127.0.0.1:41973/monro-family-prayers/
-ok   service worker script http://127.0.0.1:41973/monro-family-prayers/sw.js
+ok   service worker scope http://127.0.0.1:42881/monro-family-prayers/
+ok   service worker script http://127.0.0.1:42881/monro-family-prayers/sw.js
 ok   service worker activated
 ok   icon /monro-family-prayers/icons/icon-192.png
 ok   /monro-family-prayers/icons/icon-192.png is 192x192
@@ -15,8 +15,12 @@ ok   /monro-family-prayers/icons/icon-512.png is 512x512
 ok   icon /monro-family-prayers/icons/icon-maskable-512.png
 ok   /monro-family-prayers/icons/icon-maskable-512.png is 512x512
 ok   01-home.png is 390x844
-ok   home title
-ok   home shows Morning Offering
+ok   night-screen.png is 390x844
+ok   night title
+ok   dedication
+ok   timer link
+ok   beginning section
+ok   simeon section
 ok   sunday hides the player when the file is missing
 ok   sunday has no audio src
 ok   02-compline-sunday.png is 390x844
@@ -52,6 +56,8 @@ ok   common prayers include Angel of God
 ok   common prayers include Saint Michael the Archangel
 ok   common prayers include The Angel of the Lord declared unto Mary
 ok   11-common-prayers.png is 390x844
+ok   timer-screen.png is 390x844
+ok   face-to-face timer advances
 ok   screen exposes compline-sunday
 ok   README contract lists compline-sunday.mp3
 ok   compline-sunday.mp3 is a basename mp3
@@ -122,8 +128,8 @@ ok   online range is 206 ({"status":206,"range":"bytes 0-1/32853","length":2})
 ok   offline range is 206 ({"status":206,"range":"bytes 0-1/32853","length":2,"type":"audio/mpeg"})
 ok   offline playback advanced currentTime
 beforeinstallprompt fired: false
-ok   working tree app files do not contain Spencer
-ok   working tree app files do not contain Rosie
+ok   footer dedication is present
+ok   no other given names were added
 ok   working tree app files do not contain Owen
 ok   working tree app files do not contain Phoebe
 ok   working tree app files do not contain roofmaxx

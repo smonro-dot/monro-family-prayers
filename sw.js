@@ -1,6 +1,6 @@
 /* Shell cache name changes only when app files change.
    Recordings update without a code change: a reload online refetches the mp3. */
-const CACHE = "monro-prayers-v1";
+const CACHE = "monro-prayers-v3";
 const SHELL = [
   "index.html",
   "sources.html",
