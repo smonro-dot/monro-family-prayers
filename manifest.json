@@ -1,0 +1,10 @@
+{
+  "name": "Monro Family Prayers",
+  "short_name": "Monro Prayers",
+  "description": "Night Prayer, Morning Offering, Rosary, and common prayers for Spencer, Rosie, Owen, and Phoebe.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f0e0c",
+  "theme_color": "#0f0e0c",
+  "orientation": "portrait"
+}
