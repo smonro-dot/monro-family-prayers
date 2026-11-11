@@ -1,10 +1,47 @@
 {
+  "id": "/monro-family-prayers/",
   "name": "Monro Family Prayers",
   "short_name": "Monro Prayers",
-  "description": "Night Prayer, Morning Offering, Rosary, and common prayers for Spencer, Rosie, Owen, and Phoebe.",
-  "start_url": "./",
+  "description": "Night Prayer for each day, the Morning Offering, the Rosary, and common prayers. Offline on your phone.",
+  "lang": "en",
+  "start_url": "/monro-family-prayers/",
+  "scope": "/monro-family-prayers/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0f0e0c",
   "theme_color": "#0f0e0c",
-  "orientation": "portrait"
+  "icons": [
+    {
+      "src": "/monro-family-prayers/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/monro-family-prayers/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/monro-family-prayers/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Night Prayer",
+      "short_name": "Night",
+      "url": "/monro-family-prayers/#/night",
+      "description": "Compline for tonight"
+    },
+    {
+      "name": "Morning Offering",
+      "short_name": "Morning",
+      "url": "/monro-family-prayers/#/morning",
+      "description": "Morning Offering"
+    }
+  ]
 }

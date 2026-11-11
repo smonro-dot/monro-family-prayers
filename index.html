@@ -1,71 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0f0e0c">
-<title>Monro Family Prayers</title>
-<link rel="manifest" href="manifest.json">
-<style>
-:root{--bg:#0f0e0c;--surface:#1a1814;--text:#e8e2d6;--muted:#9a9286;--accent:#c4a574;--accent-soft:#8b7355}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;min-height:100vh}
-body{padding:env(safe-area-inset-top) 20px env(safe-area-inset-bottom);max-width:520px;margin:0 auto}
-header{text-align:center;padding:24px 0 8px}
-.cross{font-size:20px;color:var(--accent)}
-h1{font-size:26px;font-weight:500;margin-top:4px}
-.subtitle{color:var(--muted);font-size:13px;margin-top:2px;font-style:italic}
-.nav{display:flex;gap:8px;overflow-x:auto;padding:16px 0 8px;scrollbar-width:none}
-.nav::-webkit-scrollbar{display:none}
-.nav button{flex:0 0 auto;padding:8px 14px;background:var(--surface);border:1px solid #2a261f;border-radius:18px;color:var(--muted);font-size:13px;cursor:pointer}
-.nav button.active{background:var(--accent);color:#1a1612;border-color:var(--accent);font-weight:600}
-.card{background:var(--surface);border-radius:14px;padding:16px;margin:10px 0;border:1px solid #2a261f;cursor:pointer}
-.card h3{font-size:16px;font-weight:500;margin-bottom:4px}
-.card p{font-size:13px;color:var(--muted)}
-.prayer{font-size:16.5px;line-height:1.65;padding-bottom:30px}
-.prayer h2{font-size:13px;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin:24px 0 10px;font-weight:600}
-.prayer p{margin-bottom:12px}
-.prayer .antiphon{font-style:italic;color:var(--accent-soft)}
-.days{display:flex;gap:6px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
-.days::-webkit-scrollbar{display:none}
-.day{flex:0 0 auto;padding:8px 12px;background:var(--surface);border:1px solid #2a261f;border-radius:16px;font-size:12px;color:var(--muted);cursor:pointer}
-.day.active{background:var(--accent);color:#1a1612;font-weight:600}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f0e0c">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Night Prayer for each day, the Morning Offering, the Rosary, and common prayers. Offline on your phone.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Monro Prayers">
+  <meta name="format-detection" content="telephone=no">
+  <title>Monro Family Prayers</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<header>
-  <div class="cross">✚</div>
-  <h1>Monro Family Prayers</h1>
-  <div class="subtitle">Spencer · Rosie · Owen · Phoebe</div>
-</header>
-<div class="nav" id="nav"></div>
-<div id="content"></div>
-<script>
-const sections=[{id:'home',label:'Home'},{id:'night',label:'Night'},{id:'morning',label:'Morning'},{id:'rosary',label:'Rosary'},{id:'common',label:'Common'}];
-const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const today=new Date().getDay();
-function commonEnding(c){return `<h2>Every Night Ends Here</h2><p>Into your hands, Lord, I commend my spirit.</p><p>Into your hands, Lord, I commend my spirit.</p><p>You have redeemed us, Lord God of truth.</p><p>I commend my spirit.</p><p>Glory be to the Father, and to the Son, and to the Holy Spirit.</p><p>Into your hands, Lord, I commend my spirit.</p><p class="antiphon">Protect us, Lord, as we stay awake; watch over us as we sleep, that awake, we may keep watch with Christ, and asleep, rest in his peace.</p><p>Lord, now you let your servant go in peace; your word has been fulfilled: my own eyes have seen the salvation which you have prepared in the sight of every people — a light to reveal you to the nations, and the glory of your people Israel.</p><p>Glory be to the Father, and to the Son, and to the Holy Spirit — as it was in the beginning, is now, and ever shall be, world without end. Amen.</p><p class="antiphon">Protect us, Lord, as we stay awake; watch over us as we sleep, that awake, we may keep watch with Christ, and asleep, rest in his peace.</p><h2>Closing Prayer</h2><p>${c}</p><h2>Blessing</h2><p>May the all-powerful Lord grant us a restful night and a peaceful death. Amen.</p><h2>Hail Mary</h2><p>Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.</p>`;}
-const begin=`<h2>Every Night Begins Here</h2><p>God, come to my assistance.</p><p>Lord, make haste to help me.</p><p>Glory be to the Father, and to the Son, and to the Holy Spirit — as it was in the beginning, is now, and ever shall be, world without end. Amen. Alleluia.</p><p style="font-style:italic;color:var(--muted);margin:16px 0;">Then a quiet minute. Thank God for the good of the day, and say sorry for the rest.</p>`;
-const nightPrayers={
-  Sunday:{html:begin+`<h2>Sunday · Psalm 91</h2><p class="antiphon">Night holds no terrors for me sleeping under God’s wings.</p>`+commonEnding('Lord, we have celebrated today the mystery of the rising of Christ to new life. May we now rest in your peace, safe from all that could harm us, and rise again refreshed and joyful, to praise you throughout another day. We ask this through Christ our Lord. Amen.')},
-  Monday:{html:begin+`<h2>Monday · Psalm 86</h2><p class="antiphon">O Lord, our God, unwearied is your love for us.</p>`+commonEnding('Lord, give our bodies restful sleep and let the work we have done today bear fruit in eternal life. We ask this through Christ our Lord. Amen.')},
-  Tuesday:{html:begin+`<h2>Tuesday · Psalm 143</h2><p class="antiphon">Do not hide your face from me; in you I put my trust.</p>`+commonEnding('Lord, fill this night with your radiance. May we sleep in peace and rise with joy to welcome the light of a new day in your name. We ask this through Christ our Lord. Amen.')},
-  Wednesday:{html:begin+`<h2>Wednesday · Psalms 31 & 130</h2><p class="antiphon">Lord God, be my refuge and my strength.</p>`+commonEnding('Lord Jesus Christ, you have given your followers an example of gentleness and humility, a task that is easy, a burden that is light. Accept the prayers and work of this day, and give us the rest that will strengthen us to render more faithful service to you, who live and reign for ever and ever. Amen.')},
-  Thursday:{html:begin+`<h2>Thursday · Psalm 16</h2><p class="antiphon">In you, my God, my body will rest in hope.</p>`+commonEnding('Lord God, send peaceful sleep to refresh our tired bodies. May your help always renew us and keep us strong in your service. We ask this through Christ our Lord. Amen.')},
-  Friday:{html:begin+`<h2>Friday · Psalm 88</h2><p class="antiphon">Day and night I cry to you, my God.</p>`+commonEnding('All-powerful God, keep us united with your Son in his death and burial so that we may rise to new life with him, who lives and reigns for ever and ever. Amen.')},
-  Saturday:{html:begin+`<h2>Saturday · Psalms 4 & 134</h2><p class="antiphon">Have mercy, Lord, and hear my prayer.</p>`+commonEnding('Lord, we have celebrated today the mystery of the rising of Christ to new life. May we now rest in your peace, safe from all that could harm us, and rise again refreshed and joyful, to praise you throughout another day. We ask this through Christ our Lord. Amen.')}
-};
-const prayers={
-  morning:{html:`<h2>Morning Offering</h2><p>O Jesus, through the Immaculate Heart of Mary, I offer you my prayers, works, joys, and sufferings of this day for all the intentions of your Sacred Heart, in union with the Holy Sacrifice of the Mass throughout the world, in reparation for my sins, for the intentions of all my relatives and friends, and in particular for the intentions of the Holy Father. Amen.</p><h2>Our Father</h2><p>Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.</p><h2>Hail Mary</h2><p>Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.</p><h2>Glory Be</h2><p>Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen.</p>`},
-  rosary:{html:`<h2>How to Pray the Rosary</h2><p>1. Make the Sign of the Cross and say the Apostles’ Creed.</p><p>2. Say the Our Father.</p><p>3. Say three Hail Marys.</p><p>4. Say the Glory Be.</p><p>5. Announce the first mystery; then say the Our Father.</p><p>6. Say ten Hail Marys while meditating on the mystery.</p><p>7. Say the Glory Be.</p><p>8. Repeat for each of the five mysteries.</p><p>9. After the five decades, say the Hail Holy Queen.</p><h2>Joyful Mysteries (Mon & Sat)</h2><p>The Annunciation · The Visitation · The Nativity · The Presentation · The Finding in the Temple</p><h2>Sorrowful Mysteries (Tue & Fri)</h2><p>The Agony in the Garden · The Scourging · The Crowning with Thorns · The Carrying of the Cross · The Crucifixion</p><h2>Glorious Mysteries (Wed & Sun)</h2><p>The Resurrection · The Ascension · The Descent of the Holy Spirit · The Assumption · The Coronation</p><h2>Luminous Mysteries (Thu)</h2><p>The Baptism of Jesus · The Wedding at Cana · The Proclamation of the Kingdom · The Transfiguration · The Institution of the Eucharist</p><h2>Hail Holy Queen</h2><p>Hail, holy Queen, Mother of mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious Advocate, thine eyes of mercy toward us; and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.</p>`},
-  common:{html:`<h2>Apostles’ Creed</h2><p>I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, his only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; he descended into hell; on the third day he rose again from the dead; he ascended into heaven, and is seated at the right hand of God the Father almighty; from there he will come to judge the living and the dead. I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.</p><h2>Act of Contrition</h2><p>O my God, I am heartily sorry for having offended Thee, and I detest all my sins because of Thy just punishments, but most of all because they offend Thee, my God, who art all good and deserving of all my love. I firmly resolve, with the help of Thy grace, to sin no more and to avoid the near occasions of sin. Amen.</p><h2>Guardian Angel</h2><p>Angel of God, my guardian dear, to whom God’s love commits me here, ever this day be at my side, to light and guard, to rule and guide. Amen.</p><h2>St. Michael</h2><p>Saint Michael the Archangel, defend us in battle. Be our protection against the wickedness and snares of the devil. May God rebuke him, we humbly pray; and do thou, O Prince of the Heavenly Host, by the power of God, cast into hell Satan and all the evil spirits who prowl about the world seeking the ruin of souls. Amen.</p><h2>Angelus</h2><p>The Angel of the Lord declared unto Mary. And she conceived of the Holy Spirit. Hail Mary…</p><p>Behold the handmaid of the Lord. Be it done unto me according to thy word. Hail Mary…</p><p>And the Word was made flesh. And dwelt among us. Hail Mary…</p><p>Pray for us, O holy Mother of God. That we may be made worthy of the promises of Christ.</p><p>Let us pray. Pour forth, we beseech thee, O Lord, thy grace into our hearts; that we, to whom the Incarnation of Christ, thy Son, was made known by the message of an angel, may by his Passion and Cross be brought to the glory of his Resurrection. Through the same Christ our Lord. Amen.</p>`}
-};
-let currentSection='home';
-let currentNight=days[today];
-function renderNav(){const nav=document.getElementById('nav');nav.innerHTML=sections.map(s=>`<button class="${s.id===currentSection?'active':''}" data-id="${s.id}">${s.label}</button>`).join('');nav.querySelectorAll('button').forEach(b=>b.onclick=()=>show(b.dataset.id));}
-function show(id){currentSection=id;renderNav();const c=document.getElementById('content');if(id==='home'){c.innerHTML=`<div class="card" onclick="show('night')"><h3>Night Prayer</h3><p>Compline · tonight’s psalm, reading, and blessing</p></div><div class="card" onclick="show('morning')"><h3>Morning Offering</h3><p>Start the day with Our Father, Hail Mary, Glory Be</p></div><div class="card" onclick="show('rosary')"><h3>Rosary</h3><p>How to pray · mysteries for each day</p></div><div class="card" onclick="show('common')"><h3>Common Prayers</h3><p>Creed, Act of Contrition, Guardian Angel, St. Michael, Angelus</p></div>`;}else if(id==='night'){const p=nightPrayers[currentNight];c.innerHTML=`<div class="days" id="nightdays"></div><div class="prayer">${p.html}</div>`;const daysEl=document.getElementById('nightdays');days.forEach(d=>{const el=document.createElement('div');el.className='day'+(d===currentNight?' active':'');el.textContent=d.slice(0,3);el.onclick=()=>{currentNight=d;show('night');};daysEl.appendChild(el);});}else{c.innerHTML=`<div class="prayer">${prayers[id].html}</div>`;}}
-renderNav();show('home');
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));}
-</script>
+  <header>
+    <div class="cross" aria-hidden="true"></div>
+    <h1>Monro Family Prayers</h1>
+    <p class="tagline">Night prayer, morning offering, rosary</p>
+  </header>
+  <nav id="nav" class="nav" aria-label="Prayers"></nav>
+  <main id="content"></main>
+  <footer>
+    <p id="offline-status">Opening…</p>
+    <p><a href="sources.html">Text sources</a></p>
+  </footer>
+  <div id="dock" class="dock" hidden data-state="idle">
+    <div class="dock-row">
+      <button type="button" id="dock-toggle">Play</button>
+      <div class="dock-copy">
+        <div id="dock-title"></div>
+        <div id="dock-state">Ready</div>
+      </div>
+    </div>
+    <audio id="prayer-audio" controls playsinline webkit-playsinline preload="auto"></audio>
+  </div>
+  <script src="js/prayers.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
